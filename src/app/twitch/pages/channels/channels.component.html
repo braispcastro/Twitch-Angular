@@ -1,1 +1,13 @@
-<p>channels works!</p>
+
+<div class="card-container">
+
+    <div class="card" *ngFor="let stream of streams">
+        <img src="{{ stream.thumbnailUrl | thumbnailImage:'1280':'720' }}" alt="{{ stream.userName }}">
+        <span class="opacity"></span>
+        <div class="card-content">
+            <span id="username">{{ stream.userName }}</span>
+            <span id="title">{{ stream.title }}</span>
+        </div>
+    </div>
+
+</div>

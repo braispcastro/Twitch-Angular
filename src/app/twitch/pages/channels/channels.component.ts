@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HelixStream, HelixUser } from 'twitch/lib';
+import { TwitchService } from '../../services/twitch.service';
 
 @Component({
   selector: 'app-channels',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChannelsComponent implements OnInit {
 
-  constructor() { }
+  streams!: HelixStream[];
+
+  constructor(private twitchService: TwitchService) {
+
+  }
 
   ngOnInit(): void {
+    this.twitchService.getStreams()
+      .subscribe(({data}) => {
+        this.streams = data
+        // console.log(data);
+      });
   }
 
 }
