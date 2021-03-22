@@ -1,0 +1,13 @@
+
+.card-container {
+    display: flex;
+    flex-direction: row; // dirección de los elementos
+    flex-wrap: wrap; // permite que se coloquen en varias lineas
+    padding: 16px;
+    
+    app-category {
+        flex-grow: 1; // para que todas las card ocupen el mismo espacio en la linea
+        flex-basis: 160px; // tamaño mínimo para reescalar las card
+        margin: 16px;
+    }
+}

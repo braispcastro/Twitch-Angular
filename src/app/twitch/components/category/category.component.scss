@@ -1,0 +1,50 @@
+
+$twitch-purple: #954fff;
+
+
+.card-overlay {
+    width: 100%;
+    aspect-ratio: 9/16;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 150ms;
+
+    img {
+        width: 100%;
+        position: relative;
+    }
+}
+
+.card-overlay:hover {
+    box-shadow: -1px 1px 0px $twitch-purple, -2px 2px 0px $twitch-purple, -3px 3px 0px $twitch-purple, -4px 4px 0px $twitch-purple, -5px 5px 0px $twitch-purple, -6px 6px 0px $twitch-purple, -7px 7px 0px $twitch-purple;
+    transform: translateX(7px) translateY(-7px);
+}
+
+.card-info {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    .card-info-text {
+        flex-grow: 1;
+        width: 0px;
+
+        #category-title {
+            width: auto;
+            max-width: max-content;
+            font-size: 14px;
+            font-weight: 600;
+            color: #EEE;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        #category-title:hover {
+            color: $twitch-purple;
+        }
+    }
+}

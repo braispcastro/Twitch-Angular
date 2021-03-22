@@ -1,27 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { GamesComponent } from './pages/games/games.component';
-import { ChannelsComponent } from './pages/channels/channels.component';
-import { FollowsComponent } from './pages/follows/follows.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
+import { ChannelsComponent } from './pages/channels/channels.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
+import { FollowsComponent } from './pages/follows/follows.component';
 import { ThumbnailImagePipe } from './pipes/thumbnail-image.pipe';
 import { ViewerCountPipe } from './pipes/viewer-count.pipe';
 import { ChannelComponent } from './components/channel/channel.component';
-import { GameComponent } from './components/game/game.component';
+import { CategoryComponent } from './components/category/category.component';
 
 
 
 @NgModule({
   declarations: [
-    GamesComponent,
-    ChannelsComponent,
-    FollowsComponent,
     InicioComponent,
-    ThumbnailImagePipe,
-    ViewerCountPipe,
+    ChannelsComponent,
+    CategoriesComponent,
+    FollowsComponent,
     ChannelComponent,
-    GameComponent
+    CategoryComponent,
+    ThumbnailImagePipe,
+    ViewerCountPipe
   ],
   imports: [
     CommonModule

@@ -5,6 +5,8 @@ import { ApiClient } from 'twitch';
 import { ClientCredentialsAuthProvider  } from 'twitch-auth';
 import { HelixPaginatedStreamFilter } from 'twitch/lib/API/Helix/Stream/HelixStreamApi';
 import { Stream } from '../interfaces/stream.interface';
+import { Category } from '../interfaces/category.interface';
+import { HelixPagination } from 'twitch/lib/API/Helix/HelixPagination';
 
 @Injectable({
   providedIn: 'root'
@@ -84,7 +86,39 @@ export class TwitchService {
     if (!environment.production) {
       localStorage.setItem('streams', JSON.stringify(streams))
     }
+
     return streams;
+  }
+
+  async getCategories(): Promise<Category[]> {
+    const categories: Category[] = [];
+
+    if (!environment.production) {
+      const savedCategories = JSON.parse(localStorage.getItem('categories')!)
+      if (savedCategories) {
+        return savedCategories;
+      }
+    }
+
+    const filter: HelixPagination = {
+      limit: "60"
+    }
+
+    const helixCategories = await this.apiClient.helix.games.getTopGames(filter);
+    for (const helixCategory of helixCategories.data) {
+      const category: Category = {
+        name: helixCategory.name,
+        preview: helixCategory.boxArtUrl
+      }
+
+      categories.push(category);
+    }
+
+    if (!environment.production) {
+      localStorage.setItem('categories', JSON.stringify(categories))
+    }
+
+    return categories;
   }
 
 }
