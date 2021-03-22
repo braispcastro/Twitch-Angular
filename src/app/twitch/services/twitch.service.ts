@@ -23,14 +23,6 @@ export class TwitchService {
     this.apiClient = new ApiClient({ authProvider });
   }
 
-  async getStreamById(id: string){
-    return this.apiClient.helix.streams.getStreamByUserId(id);
-  }
-
-  async getStreamByUserName(userName: string) {
-    return this.apiClient.helix.users.getUserByName(userName);
-  }
-
   async getStreams(): Promise<Stream[]> {
     const streams: Stream[] = [];
 
