@@ -6,7 +6,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ThumbnailImagePipe implements PipeTransform {
 
   transform(url: string, width: string, height: string): string {
-    console.log(url);
+
+    if (url === '')
+      return `https://via.placeholder.com/${width}x${height}`;
+
     return url
       .replace('{width}', width)
       .replace('{height}', height);
