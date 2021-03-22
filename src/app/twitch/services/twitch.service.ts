@@ -20,7 +20,7 @@ export class TwitchService {
     const authProvider = new ClientCredentialsAuthProvider(this.client_id, this.client_secret);
     this.apiClient = new ApiClient({ authProvider });
   }
-  
+
   async getStreamById(id: string){
     return this.apiClient.helix.streams.getStreamByUserId(id);
   }
@@ -35,7 +35,6 @@ export class TwitchService {
     if (!environment.production) {
       const savedStreams = JSON.parse(localStorage.getItem('streams')!)
       if (savedStreams) {
-        console.log(savedStreams);
         return savedStreams;
       }
     }
@@ -59,7 +58,11 @@ export class TwitchService {
 
       if (helixStream.gameId) {
         await helixStream.getGame()
-          .then(game => stream.game = game?.name ?? '-');'-';
+          .then(game => {
+            if (game) {
+              stream.game = game.name;
+            }
+          });
       }
 
       await helixStream.getUser()
@@ -68,8 +71,9 @@ export class TwitchService {
       await helixStream.getTags()
         .then(tags => {
           for (const tag of tags) {
-            if (tag.getName('es-es')) {
-              stream.tags.push(tag.getName('es-es')!);
+            const tagName = tag.getName('en-us');
+            if (tagName) {
+              stream.tags.push(tagName);
             }
           }
         });
@@ -77,7 +81,9 @@ export class TwitchService {
       streams.push(stream);
     }
 
-    localStorage.setItem('streams', JSON.stringify(streams))
+    if (!environment.production) {
+      localStorage.setItem('streams', JSON.stringify(streams))
+    }
     return streams;
   }
 

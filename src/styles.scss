@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
+$twitch-purple: #954fff;
+
 * {
     margin: 0px;
     padding: 0px;
@@ -11,4 +13,26 @@
 
 body {
     background-color: #0E0E10;
+}
+
+
+@keyframes rainbowBlink {
+    0% {
+        border: 3px solid $twitch-purple;
+    }
+    16% {
+        border: 3px solid red;
+    }
+    32% {
+        border: 3px solid orange;
+    }
+    48% {
+        border: 3px solid yellow;
+    }
+    65% {
+        border: 3px solid green;
+    }
+    82% {
+        border: 3px solid blue;
+    }
 }

@@ -1,29 +1,6 @@
-
 <div class="card-container">
-
-    <div class="card" *ngFor="let stream of streams">
-        
-        <div class="card-overlay">
-
-            <img src="{{ stream.preview | thumbnailImage:'1280':'720'  }}" alt="{{ stream.channel }}">
-            
-            <div class="card-overlay-container">
-                <p class="live">LIVE</p>
-            </div>
-
-        </div>
-
-        <div class="card-info">
-
-            <img src="{{ stream.logo | thumbnailImage:'45':'45' }}" alt="{{ stream.channel }}">
-
-            <div class="card-info-text">
-                <h3 id="stream-title">{{ stream.title }}</h3>
-                <h4 id="channel-subtitle">{{ stream.channel }}</h4>
-                <h4 id="channel-subtitle">{{ stream.game }}</h4>
-            </div>
-        </div>
-        
-    </div>
-
+    <app-channel
+        *ngFor="let stream of streams"
+        [stream]="stream">
+    </app-channel>
 </div>

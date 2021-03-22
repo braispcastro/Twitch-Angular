@@ -1,0 +1,147 @@
+
+$twitch-purple: #954fff;
+
+
+.card-overlay {
+    width: 100%;
+    aspect-ratio: 16/9;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 150ms;
+
+    img {
+        width: 100%;
+        z-index: 1;
+        position: relative;
+    }
+    
+    .card-overlay-container {
+        width: 100%;
+        aspect-ratio: 16/9;
+        z-index: 3;
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        #live {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white;
+            background-color: red;
+            border-radius: 5px;
+            padding-left: 4px;
+            padding-right: 4px;
+            padding-bottom: 1px;
+            margin: 8px;
+            width: fit-content;
+        }
+
+        #viewers {
+            font-size: 14px;
+            font-weight: normal;
+            color: white;
+            background-color: rgba(20, 20, 20, 0.8);
+            border-radius: 3px;
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            margin: 8px;
+            width: fit-content;
+            position: absolute;
+            bottom: 0;
+        }
+    }
+}
+
+.card-overlay:hover {
+    box-shadow: -1px 1px 0px $twitch-purple, -2px 2px 0px $twitch-purple, -3px 3px 0px $twitch-purple, -4px 4px 0px $twitch-purple, -5px 5px 0px $twitch-purple, -6px 6px 0px $twitch-purple, -7px 7px 0px $twitch-purple;
+    transform: translateX(7px) translateY(-7px);
+}
+
+.card-info {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    img {
+        border-radius: 999px;
+        width: 45px;
+        height: 45px;
+        border: 3px solid $twitch-purple;
+        cursor: pointer;
+    }
+
+    img:hover {
+        animation: rainbowBlink 2s infinite linear;
+    }
+
+    .card-info-text {
+        margin-left: 12px;
+        flex-grow: 1;
+        width: 0px; // no entiendo por qué, pero esto evita que los hijos crezcan más que el padre
+
+        #stream-title {
+            width: auto;
+            max-width: max-content;
+            font-size: 15px;
+            font-weight: 600;
+            color: #EEE;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        #channel-subtitle {
+            width: auto;
+            max-width: max-content;
+            font-size: 13px;
+            font-weight: normal;
+            color: #999;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        #channel-subtitle:hover,
+        #stream-title:hover {
+            color: $twitch-purple;
+        }
+
+        .card-info-text-tags {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 100%;
+            
+            span {
+                padding-left: 8px;
+                padding-right: 8px;
+                padding-top: 3px;
+                padding-bottom: 3px;
+                margin-right: 5px;
+                margin-top: 6px;
+                border-radius: 15px;
+                background-color: #333;
+                font-size: 11px;
+                font-weight: bold;
+                color: #AAA;
+                white-space: nowrap;
+                cursor: pointer;
+            }
+
+            span:last-child {
+                margin-right: 0px;
+            }
+
+            span:hover {
+                background-color: #444;
+            }
+        }
+    }
+}
