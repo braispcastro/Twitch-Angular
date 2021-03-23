@@ -16,4 +16,8 @@ export class CategoryComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  goToCategory() {
+    window.location.href= `https://www.twitch.tv/directory/game/${this.category.name}`;
+  }
+
 }

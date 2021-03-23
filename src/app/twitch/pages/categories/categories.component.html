@@ -1,6 +1,14 @@
-<div class="card-container">
-    <app-category
-        *ngFor="let category of categories"
-        [category]="category">
-    </app-category>
+<div
+    id="loading"
+    *ngIf="!categories; else categoryCards">
+    <p>Loading...</p>
 </div>
+
+<ng-template #categoryCards>
+    <div class="card-container">
+        <app-category
+            *ngFor="let category of categories"
+            [category]="category">
+        </app-category>
+    </div>
+</ng-template>

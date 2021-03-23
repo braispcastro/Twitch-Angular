@@ -1,4 +1,16 @@
 
+#loading {
+    margin-top: 32px;
+    width: 200px;
+    height: 200px;
+
+    p {
+        width: 100%;
+        color:white;
+        text-align: center;
+    }
+}
+
 .card-container {
     display: flex;
     flex-direction: row; // dirección de los elementos

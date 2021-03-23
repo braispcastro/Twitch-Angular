@@ -1,4 +1,4 @@
-<div class="card-overlay">
+<div class="card-overlay" (click)="goToChannel()">
 
     <img src="{{ stream.preview | thumbnailImage:'1280':'720'  }}" alt="{{ stream.channel }}">
     
@@ -11,13 +11,13 @@
 
 <div class="card-info">
 
-    <img src="{{ stream.logo | thumbnailImage:'45':'45' }}" alt="{{ stream.channel }}">
+    <img src="{{ stream.logo | thumbnailImage:'45':'45' }}" alt="{{ stream.channel }}" (click)="goToChannel()">
 
     <div class="card-info-text">
         
-        <h3 id="stream-title">{{ stream.title }}</h3>
-        <h4 id="channel-subtitle">{{ stream.channel }}</h4>
-        <h4 id="channel-subtitle">{{ stream.game }}</h4>
+        <h3 id="stream-title" (click)="goToChannel()">{{ stream.title }}</h3>
+        <h4 id="channel-subtitle" (click)="goToChannel()">{{ stream.channel }}</h4>
+        <h4 id="channel-subtitle" (click)="goToCategory()">{{ stream.game }}</h4>
 
         <div class="card-info-text-tags">
             <span class="tag" *ngFor="let tag of stream.tags.splice(0, 5)">{{ tag }}</span>

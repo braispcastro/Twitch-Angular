@@ -14,6 +14,15 @@ export class ChannelComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
+  }
+
+  goToChannel() {
+    window.location.href= `https://www.twitch.tv/${this.stream.channel}`;
+  }
+
+  goToCategory() {
+    window.location.href= `https://www.twitch.tv/directory/game/${this.stream.game}`;
   }
 
 }

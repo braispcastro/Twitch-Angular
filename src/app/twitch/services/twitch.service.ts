@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵCodegenComponentFactoryResolver } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
 import { ApiClient } from 'twitch';
@@ -23,11 +23,21 @@ export class TwitchService {
     this.apiClient = new ApiClient({ authProvider });
   }
 
+  // Obtener la lista de canales con más visitas
   async getStreams(): Promise<Stream[]> {
     const streams: Stream[] = [];
+    let isNewList: boolean = false;
 
-    if (!environment.production) {
-      const savedStreams = JSON.parse(localStorage.getItem('streams')!)
+    // Se comprueba si han pasado más de 5 minutos desde la ultima petición de canales
+    const streamsTimeSaved = new Date(localStorage.getItem('streamsTimeSaved')!);
+    streamsTimeSaved.setMinutes(streamsTimeSaved.getMinutes() + 5);
+    if (streamsTimeSaved > new Date()) {
+      const savedStreams: Promise<Stream[]> = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(JSON.parse(localStorage.getItem('streams')!));
+        }, 100);
+      }); 
+
       if (savedStreams) {
         return savedStreams;
       }
@@ -37,6 +47,7 @@ export class TwitchService {
       limit: "24"
     }
 
+    isNewList = true;
     const helixStreams = await this.apiClient.helix.streams.getStreams(filter);
     
     for (const helixStream of helixStreams.data) {
@@ -50,6 +61,7 @@ export class TwitchService {
         viewers: helixStream.viewers.toString()
       };
 
+      // Se obtiene el juego
       if (helixStream.gameId) {
         await helixStream.getGame()
           .then(game => {
@@ -59,9 +71,11 @@ export class TwitchService {
           });
       }
 
+      // Se obtiene el usuario
       await helixStream.getUser()
         .then(user => stream.logo = user?.profilePictureUrl ?? '');
       
+      // Se obtienen los tags
       await helixStream.getTags()
         .then(tags => {
           for (const tag of tags) {
@@ -71,21 +85,28 @@ export class TwitchService {
             }
           }
         });
-
+      
+      // Se añade el objeto a la lista de streams
       streams.push(stream);
     }
 
-    if (!environment.production) {
-      localStorage.setItem('streams', JSON.stringify(streams))
+    if (isNewList) {
+      localStorage.setItem('streamsTimeSaved', new Date().toString());
+      localStorage.setItem('streams', JSON.stringify(streams));
     }
 
     return streams;
   }
 
+  // Obtener la lista de categorías más vistas
   async getCategories(): Promise<Category[]> {
     const categories: Category[] = [];
+    let isNewList: boolean = false;
 
-    if (!environment.production) {
+    // Se comprueba si han pasado más de 5 minutos desde la ultima petición de canales
+    const categoriesTimeSaved = new Date(localStorage.getItem('categoriesTimeSaved')!);
+    categoriesTimeSaved.setMinutes(categoriesTimeSaved.getMinutes() + 5);
+    if (categoriesTimeSaved > new Date()) {
       const savedCategories = JSON.parse(localStorage.getItem('categories')!)
       if (savedCategories) {
         return savedCategories;
@@ -96,7 +117,9 @@ export class TwitchService {
       limit: "60"
     }
 
+    isNewList = true;
     const helixCategories = await this.apiClient.helix.games.getTopGames(filter);
+
     for (const helixCategory of helixCategories.data) {
       const category: Category = {
         name: helixCategory.name,
@@ -106,7 +129,8 @@ export class TwitchService {
       categories.push(category);
     }
 
-    if (!environment.production) {
+    if (isNewList) {
+      localStorage.setItem('categoriesTimeSaved', new Date().toString());
       localStorage.setItem('categories', JSON.stringify(categories))
     }
 

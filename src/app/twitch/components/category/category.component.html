@@ -1,10 +1,10 @@
 
 <div class="card-overlay">
-    <img src="{{ category.preview | thumbnailImage:'360':'640'  }}" alt="{{ category.name }}">
+    <img src="{{ category.preview | thumbnailImage:'360':'640'  }}" alt="{{ category.name }}" (click)="goToCategory()">
 </div>
 
 <div class="card-info">
     <div class="card-info-text">
-        <h3 id="category-title">{{ category.name }}</h3>
+        <h3 id="category-title" (click)="goToCategory()">{{ category.name }}</h3>
     </div>
 </div>

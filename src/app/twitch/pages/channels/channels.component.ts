@@ -18,5 +18,5 @@ export class ChannelsComponent implements OnInit {
     this.twitchService.getStreams()
       .then(streams => this.streams = streams);
   }
-
+  
 }
