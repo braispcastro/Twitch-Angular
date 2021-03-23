@@ -18,7 +18,7 @@ export class ChannelComponent implements OnInit {
   }
 
   goToChannel() {
-    window.location.href= `https://www.twitch.tv/${this.stream.channel}`;
+    window.location.href= `https://www.twitch.tv/${this.stream.channel_name}`;
   }
 
   goToCategory() {

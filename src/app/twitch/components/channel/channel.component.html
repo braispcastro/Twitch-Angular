@@ -1,6 +1,6 @@
 <div class="card-overlay" (click)="goToChannel()">
 
-    <img src="{{ stream.preview | thumbnailImage:'1280':'720'  }}" alt="{{ stream.channel }}">
+    <img src="{{ stream.preview | thumbnailImage:'1280':'720'  }}" alt="{{ stream.display_name }}">
     
     <div class="card-overlay-container">
         <p id="live">LIVE</p>
@@ -11,12 +11,12 @@
 
 <div class="card-info">
 
-    <img src="{{ stream.logo | thumbnailImage:'45':'45' }}" alt="{{ stream.channel }}" (click)="goToChannel()">
+    <img src="{{ stream.logo | thumbnailImage:'45':'45' }}" alt="{{ stream.display_name }}" (click)="goToChannel()">
 
     <div class="card-info-text">
         
         <h3 id="stream-title" (click)="goToChannel()">{{ stream.title }}</h3>
-        <h4 id="channel-subtitle" (click)="goToChannel()">{{ stream.channel }}</h4>
+        <h4 id="channel-subtitle" (click)="goToChannel()">{{ stream.display_name }}</h4>
         <h4 id="channel-subtitle" (click)="goToCategory()">{{ stream.game }}</h4>
 
         <div class="card-info-text-tags">

@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { InicioComponent } from './twitch/pages/inicio/inicio.component';
 import { ChannelsComponent } from './twitch/pages/channels/channels.component';
 import { CategoriesComponent } from './twitch/pages/categories/categories.component';
-import { FollowsComponent } from './twitch/pages/follows/follows.component';
 
 
 const routes: Routes = [
@@ -20,10 +19,6 @@ const routes: Routes = [
   {
     path: 'categories',
     component: CategoriesComponent,
-  },
-  {
-    path: 'follows',
-    component: FollowsComponent,
   },
   {
     path: '**',

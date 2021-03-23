@@ -1,6 +1,7 @@
 export interface Stream {
     title: string;
-    channel: string;
+    display_name: string;
+    channel_name: string;
     game: string;
     logo: string;
     viewers: string;

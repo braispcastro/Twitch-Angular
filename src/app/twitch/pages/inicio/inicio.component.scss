@@ -1,0 +1,25 @@
+
+#loading {
+    margin-top: 32px;
+    width: 200px;
+    height: 200px;
+
+    p {
+        width: 100%;
+        color:white;
+        text-align: center;
+    }
+}
+
+.card-container {
+    display: flex;
+    flex-direction: row; // dirección de los elementos
+    flex-wrap: wrap; // permite que se coloquen en varias lineas
+    padding: 16px;
+    
+    app-channel {
+        flex-grow: 1; // para que todas las card ocupen el mismo espacio en la linea
+        flex-basis: 280px; // tamaño mínimo para reescalar las card
+        margin: 16px;
+    }
+}

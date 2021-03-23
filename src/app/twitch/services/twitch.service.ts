@@ -1,12 +1,11 @@
-import { Injectable, ɵCodegenComponentFactoryResolver } from '@angular/core';
-import { environment } from '../../../environments/environment';
-
-import { ApiClient } from 'twitch';
+import { Injectable } from '@angular/core';
+import { ApiClient, HelixStream, UserNameResolvable } from 'twitch';
 import { ClientCredentialsAuthProvider  } from 'twitch-auth';
 import { HelixPaginatedStreamFilter } from 'twitch/lib/API/Helix/Stream/HelixStreamApi';
 import { Stream } from '../interfaces/stream.interface';
 import { Category } from '../interfaces/category.interface';
 import { HelixPagination } from 'twitch/lib/API/Helix/HelixPagination';
+import { HelixFollowFilter } from 'twitch/lib/API/Helix/User/HelixFollow';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +51,8 @@ export class TwitchService {
     
     for (const helixStream of helixStreams.data) {
       const stream: Stream = {
-        channel: helixStream.userDisplayName,
+        channel_name: helixStream.userName,
+        display_name: helixStream.userDisplayName,
         game: '',
         logo: '',
         preview: helixStream.thumbnailUrl,
@@ -135,6 +135,107 @@ export class TwitchService {
     }
 
     return categories;
+  }
+
+  // Obtener la lista de canales online seguidos por mi
+  async getFollowersForUser(): Promise<Stream[]> {
+
+    let isNewList: boolean = false;
+    const userName = localStorage.getItem('user')!;
+    const userNameResolvable: UserNameResolvable = {
+      name: userName
+    }
+
+    // Se comprueba si han pasado más de 5 minutos desde la ultima petición de canales
+    const streamsTimeSaved = new Date(localStorage.getItem('followsTimeSaved')!);
+    streamsTimeSaved.setMinutes(streamsTimeSaved.getMinutes() + 5);
+    if (streamsTimeSaved > new Date()) {
+      const savedStreams: Promise<Stream[]> = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(JSON.parse(localStorage.getItem('follows')!));
+        }, 100);
+      }); 
+
+      if (savedStreams) {
+        return savedStreams;
+      }
+    }
+
+    const helixUser = await this.apiClient.helix.users.getUserByName(userNameResolvable);
+    if (!helixUser) {
+      return [];
+    }
+    
+    const helixFollowFilter: HelixFollowFilter = {
+      user: {
+        id: helixUser!.id
+      }
+    }
+
+    isNewList = true;
+    const helixFollows = await this.apiClient.helix.users.getFollowsPaginated(helixFollowFilter).getAll();
+
+    let hStreams: HelixStream[] = [];
+    const channelsId: string[] = [];
+    helixFollows.forEach(x => channelsId.push(x.followedUserId));
+    const iterations: number = Math.ceil(channelsId.length / 100);
+    for (let i = 0; i < iterations; i++) {
+      const helixPaginatedStreamFilter: HelixPaginatedStreamFilter = {
+        userId: channelsId.splice(0, 100)
+      }
+      const helixStreams = await this.apiClient.helix.streams.getStreams(helixPaginatedStreamFilter);
+      hStreams = hStreams.concat(helixStreams.data);
+    }
+
+    let streams: Stream[] = [];
+    for (const hs of hStreams) {
+      const stream: Stream = {
+        channel_name: hs.userName,
+        display_name: hs.userDisplayName,
+        game: hs.gameId,
+        logo: '',
+        preview: hs.thumbnailUrl,
+        tags: [],
+        title: hs.title,
+        viewers: hs.viewers.toString()
+      }
+
+      // Se obtiene el juego
+      if (hs.gameId) {
+        await hs.getGame()
+          .then(game => {
+            if (game) {
+              stream.game = game.name;
+            }
+          });
+      }
+
+      // Se obtiene el usuario
+      await hs.getUser()
+        .then(user => stream.logo = user?.profilePictureUrl ?? '');
+      
+      // Se obtienen los tags
+      await hs.getTags()
+        .then(tags => {
+          for (const tag of tags) {
+            const tagName = tag.getName('en-us');
+            if (tagName) {
+              stream.tags.push(tagName);
+            }
+          }
+        });
+
+      streams.push(stream)
+    }
+
+    streams.sort((a, b) => (parseInt(a.viewers) > parseInt(b.viewers) ? -1 : 1));
+
+    if (isNewList) {
+      localStorage.setItem('followsTimeSaved', new Date().toString());
+      localStorage.setItem('follows', JSON.stringify(streams));
+    }
+
+    return streams;
   }
 
 }

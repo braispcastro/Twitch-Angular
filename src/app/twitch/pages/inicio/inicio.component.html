@@ -1,0 +1,14 @@
+<div
+    id="loading"
+    *ngIf="!streams; else streamCards">
+    <p>Loading...</p>
+</div>
+
+<ng-template #streamCards>
+    <div class="card-container">
+        <app-channel
+            *ngFor="let stream of streams"
+            [stream]="stream">
+        </app-channel>
+    </div>
+</ng-template>

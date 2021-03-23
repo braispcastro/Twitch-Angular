@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Twitch-Angular';
+
+  constructor() {
+    localStorage.setItem('user', 'cheisinilusions');
+  }
 }
